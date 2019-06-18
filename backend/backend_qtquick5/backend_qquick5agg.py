@@ -9,7 +9,8 @@ from matplotlib.backend_bases import cursors
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5 import TimerQT
 
-from matplotlib.externals import six
+import numpy as np
+import six
 
 from PyQt5 import QtCore, QtGui, QtQuick, QtWidgets
 
@@ -111,10 +112,11 @@ class FigureCanvasQtQuickAgg(QtQuick.QQuickPaintedItem, FigureCanvasAgg):
             # into argb format and is in a 4 byte unsigned int.  Little endian
             # system is LSB first and expects the bytes in reverse order
             # (bgra).
+
             if QtCore.QSysInfo.ByteOrder == QtCore.QSysInfo.LittleEndian:
-                stringBuffer = self.renderer._renderer.tostring_bgra()
+                stringBuffer = np.asarray(self.renderer._renderer).take([2,1,0,3], axis=2).tobytes()
             else:
-                stringBuffer = self.renderer._renderer.tostring_argb()
+                stringBuffer = self.renderer.tostring_argb()
 
             refcnt = sys.getrefcount(stringBuffer)
 
@@ -377,15 +379,15 @@ class FigureCanvasQtQuickAgg(QtQuick.QQuickPaintedItem, FigureCanvasAgg):
         qApp.processEvents()
 
     def start_event_loop(self, timeout):
-        FigureCanvasAgg.start_event_loop_default(self, timeout)
+        FigureCanvasAgg.start_event_loop(self, timeout)
 
     start_event_loop.__doc__ = \
-                             FigureCanvasAgg.start_event_loop_default.__doc__
+                             FigureCanvasAgg.start_event_loop.__doc__
 
     def stop_event_loop(self):
-        FigureCanvasAgg.stop_event_loop_default(self)
+        FigureCanvasAgg.stop_event_loop(self)
 
-    stop_event_loop.__doc__ = FigureCanvasAgg.stop_event_loop_default.__doc__
+    stop_event_loop.__doc__ = FigureCanvasAgg.stop_event_loop.__doc__
 
      
 class FigureQtQuickAggToolbar(FigureCanvasQtQuickAgg):
