@@ -45,7 +45,7 @@ def main():
     
     view = QQuickView()
     view.setResizeMode(QQuickView.SizeRootObjectToView)
-    view.setSource(QUrl('backend_qtquick5/Figure.qml'))
+    view.setSource(QUrl(os.path.join(os.path.dirname(__file__), 'backend_qtquick5','Figure.qml')))
     view.show()
     
     win = view.rootObject()

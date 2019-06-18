@@ -45,7 +45,7 @@ def main():
     view = QQuickView()
     view.engine().addImageProvider("mplIcons", imgProvider)
     view.setResizeMode(QQuickView.SizeRootObjectToView)
-    view.setSource(QUrl('backend_qtquick5/FigureToolbar.qml'))
+    view.setSource(QUrl(os.path.join(os.path.dirname(__file__), 'backend_qtquick5','FigureToolbar.qml')))
     
     win = view.rootObject()
     fig = win.findChild(QObject, "figure").getFigure()

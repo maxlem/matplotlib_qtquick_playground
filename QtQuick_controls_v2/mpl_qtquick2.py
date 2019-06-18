@@ -33,8 +33,7 @@ import matplotlib.pyplot as plt
 
 import numpy as np
 
-sys.path.append('../backend')
-from backend_qtquick5 import FigureCanvasQTAggToolbar, MatplotlibIconProvider
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 class DataSerie(object):
 
@@ -303,7 +302,7 @@ def main():
     mainApp = Form(data=data_model)
     context.setContextProperty("draw_mpl", mainApp)
     
-    engine.load(QUrl('main.qml'))
+    engine.load(QUrl(os.path.join(os.path.dirname(__file__), 'main.qml')))
     
     win = engine.rootObjects()[0]
     mainApp.figure = win.findChild(QObject, "figure").getFigure()
