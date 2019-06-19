@@ -155,7 +155,6 @@ Dialog {
         RowLayout {
             id: buttons
             
-            anchors.bottom: parent.bottom
             Layout.fillWidth: true
             
             Button {

@@ -591,8 +591,8 @@ class FigureQtQuickAggToolbar(FigureCanvasQtQuickAgg):
             except (ValueError, OverflowError):
                 pass
             else:
-                artists = [a for a in event.inaxes.mouseover_set
-                           if a.contains(event)]
+                artists = [a for a in event.inaxes.artists
+                           if a.mouseover]
 
                 if artists:
 
