@@ -228,7 +228,7 @@ class FigureCanvasQtQuickAgg(QtQuick.QQuickPaintedItem, FigureCanvasAgg):
         QtQuick.QQuickPaintedItem.geometryChanged(self, new_geometry, old_geometry)
         
     def hoverEnterEvent(self, event):
-        FigureCanvasAgg.enter_notify_event(self, guiEvent=event)
+        FigureCanvasAgg.enter_notify_event(self, guiEvent=event, xy=(event.pos().x(), event.pos().x()))
 
     def hoverLeaveEvent(self, event):
         QtWidgets.QApplication.restoreOverrideCursor()
