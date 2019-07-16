@@ -35,6 +35,7 @@ class MatplotlibIconProvider(QtQuick.QQuickImageProvider):
         
         return pixmap, size
 
+
 class FigureCanvasQtQuickAgg(QtQuick.QQuickPaintedItem, FigureCanvasAgg):
     """ This class creates a QtQuick Item encapsulating a Matplotlib
         Figure and all the functions to interact with the 'standard'
@@ -65,6 +66,7 @@ class FigureCanvasQtQuickAgg(QtQuick.QQuickPaintedItem, FigureCanvasAgg):
     bottomChanged = QtCore.pyqtSignal()
     wspaceChanged = QtCore.pyqtSignal()
     hspaceChanged = QtCore.pyqtSignal()
+    figureProviderChanged = QtCore.pyqtSignal()
 
     def __init__(self, figure, parent=None, coordinates=True):
         if DEBUG:
@@ -77,6 +79,7 @@ class FigureCanvasQtQuickAgg(QtQuick.QQuickPaintedItem, FigureCanvasAgg):
         FigureCanvasAgg.__init__(self, figure=figure)
 
         self._drawRect = None
+        self._figureProvider = None
         self.blitbox = None
         
         # Activate hover events and mouse press events
@@ -87,7 +90,22 @@ class FigureCanvasQtQuickAgg(QtQuick.QQuickPaintedItem, FigureCanvasAgg):
         
     def getFigure(self):
         return self.figure
-        
+    
+
+
+    @QtCore.pyqtProperty(QtCore.QObject, notify=figureProviderChanged)
+    def figureProvider(self):
+        return self._figureProvider
+    
+    @figureProvider.setter
+    def figureProvider(self, p):
+        if p != self._figureProvider:
+            if self._figureProvider is not None:
+                self._figureProvider.setFigure(None) #detach old provider
+            self._figureProvider = p
+            self._figureProvider.setCanvas(self)
+            self.figureProviderChanged.emit()
+
     def drawRectangle(self, rect):
         self._drawRect = rect
         self.update()
@@ -166,6 +184,7 @@ class FigureCanvasQtQuickAgg(QtQuick.QQuickPaintedItem, FigureCanvasAgg):
         """
         # The Agg draw is done here; delaying causes problems with code that
         # uses the result of the draw() to update plot elements.
+
         FigureCanvasAgg.draw(self)
         self.update()
 

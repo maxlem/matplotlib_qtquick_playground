@@ -8,6 +8,8 @@ Item{
     width: 640
     height: 480
 
+    property alias figureProvider : mplView.figureProvider
+
     ColumnLayout {
         spacing : 0
         anchors.fill: parent        
