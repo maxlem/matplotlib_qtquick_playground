@@ -16,6 +16,35 @@ from PyQt5 import QtCore, QtGui, QtQuick, QtWidgets
 
 DEBUG = False
 
+to_qt_button = {
+    1: QtCore.Qt.LeftButton
+  , 2: QtCore.Qt.MidButton
+  , 3: QtCore.Qt.RightButton
+}
+
+class MPLImageHelper(object):
+    def __init__(self, img, ax):
+        super(MPLHelper, self).__init__()
+        self.img = img
+        self.ax = ax
+        self.ax.format_coord = self.format_coord
+    
+    def to_indices(self, x, y):
+        numrows, numcols = self.img.shape[:2]
+        col, row = (int(v+0.5) for v in (x,y))
+        if col>=0 and col<numcols and row>=0 and row<numrows:
+            return col, row
+        raise RuntimeError("out of bounds")
+
+    def format_coord(self, x, y):
+        try:
+            col, row = self.to_indices(x,y)
+            z = self.img[row,col]
+            return 'x=%1.4f, y=%1.4f, value=%1.4f'%(x, y, z)
+        except:
+            return 'x=%1.4f, y=%1.4f'%(x, y)
+
+
 class MatplotlibIconProvider(QtQuick.QQuickImageProvider):
     """ This class provide the matplotlib icons for the navigation toolbar.
     """
