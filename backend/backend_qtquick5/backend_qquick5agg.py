@@ -24,7 +24,6 @@ to_qt_button = {
 
 class MPLImageHelper(object):
     def __init__(self, img, ax):
-        super(MPLHelper, self).__init__()
         self.img = img
         self.ax = ax
         self.ax.format_coord = self.format_coord

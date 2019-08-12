@@ -1,5 +1,5 @@
 
-from .backend_qquick5agg import MatplotlibIconProvider, FigureCanvasQTAgg, FigureCanvasQTAggToolbar
+from .backend_qquick5agg import to_qt_button, MPLImageHelper, MatplotlibIconProvider, FigureCanvasQTAgg, FigureCanvasQTAggToolbar
 
 import os
 QMLDIR = os.path.dirname(__file__)
